@@ -33,7 +33,7 @@ def chgnet_initialize(model_name = None, as_path = False, dftd3 = False, gpu = T
     if model_name is None:
         myCHGNet = CHGNet.load()
     elif not as_path:
-        myCHGNet = CHGNet.load(model_name)
+        myCHGNet = CHGNet.load(model_name = model_name)
     else:
         myCHGNet = CHGNet.from_file(model_name)
 
