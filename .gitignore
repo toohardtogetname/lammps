@@ -4,9 +4,11 @@ examples/
 !examples/OC20DRIVER/
 !examples/M3GNET/
 !examples/CHGNET/
+!examples/EQV2/
 potentials/
 !potentials/OC20DRIVER/
 !potentials/M3GNET/
 !potentials/CHGNET/
+!potentials/EQV2/
 python/
 tools/
