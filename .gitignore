@@ -5,10 +5,12 @@ examples/
 !examples/M3GNET/
 !examples/CHGNET/
 !examples/EQV2/
+!examples/ORB/
 potentials/
 !potentials/OC20DRIVER/
 !potentials/M3GNET/
 !potentials/CHGNET/
 !potentials/EQV2/
+!potentials/ORB/
 python/
 tools/

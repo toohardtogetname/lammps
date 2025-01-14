@@ -108,6 +108,7 @@ PACKAGE = \
 	ml-m3gnet \
 	ml-chgnet \
 	ml-eqv2 \
+	ml-orb \
 	mofff \
 	molecule \
 	molfile \
