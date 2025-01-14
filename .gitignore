@@ -6,11 +6,13 @@ examples/
 !examples/CHGNET/
 !examples/EQV2/
 !examples/ORB/
+!examples/MATTERSIM/
 potentials/
 !potentials/OC20DRIVER/
 !potentials/M3GNET/
 !potentials/CHGNET/
 !potentials/EQV2/
 !potentials/ORB/
+!potentials/MATTERSIM/
 python/
 tools/

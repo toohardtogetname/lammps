@@ -109,6 +109,7 @@ PACKAGE = \
 	ml-chgnet \
 	ml-eqv2 \
 	ml-orb \
+	ml-mattersim \
 	mofff \
 	molecule \
 	molfile \
