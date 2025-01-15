@@ -110,6 +110,7 @@ PACKAGE = \
 	ml-eqv2 \
 	ml-orb \
 	ml-mattersim \
+	ml-mace \
 	mofff \
 	molecule \
 	molfile \

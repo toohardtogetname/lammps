@@ -7,6 +7,7 @@ examples/
 !examples/EQV2/
 !examples/ORB/
 !examples/MATTERSIM/
+!examples/MACE/
 potentials/
 !potentials/OC20DRIVER/
 !potentials/M3GNET/
@@ -14,5 +15,6 @@ potentials/
 !potentials/EQV2/
 !potentials/ORB/
 !potentials/MATTERSIM/
+!potentials/MACE/
 python/
 tools/
