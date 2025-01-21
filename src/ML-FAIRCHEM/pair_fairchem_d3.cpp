@@ -5,11 +5,11 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-#include "pair_eqv2_d3.h"
+#include "pair_fairchem_d3.h"
 
 using namespace LAMMPS_NS;
 
-PairEQV2D3::PairEQV2D3(LAMMPS *lmp) : PairEQV2(lmp)
+PairFAIRChemD3::PairFAIRChemD3(LAMMPS *lmp) : PairFAIRChem(lmp)
 {
     if (copymode)
     {
@@ -19,17 +19,17 @@ PairEQV2D3::PairEQV2D3(LAMMPS *lmp) : PairEQV2(lmp)
     // NOP
 }
 
-PairEQV2D3::~PairEQV2D3()
+PairFAIRChemD3::~PairFAIRChemD3()
 {
     // NOP
 }
 
-int PairEQV2D3::withDFTD3()
+int PairFAIRChemD3::withDFTD3()
 {
     return 1;
 }
 
-int PairEQV2D3::withGPU()
+int PairFAIRChemD3::withGPU()
 {
     return 0;
 }

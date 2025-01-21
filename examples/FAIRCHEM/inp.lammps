@@ -1,5 +1,5 @@
 #
-# This is an example of the driver of `EquiformerV2' <https://github.com/FAIR-Chem/fairchem>,
+# This is an example of the driver of `FAIR-Chem' <https://github.com/FAIR-Chem/fairchem>,
 # which contains a state-of-the-art Graph Neural Network Potential trained with data of Materials Projects.
 # This driver is developed by AdvanceSoft Corp <https://www.advancesoft.jp>.
 # Before you use this driver, you have to install python3 and fairchem (pip install fairchem-core).
@@ -15,10 +15,10 @@ units         metal
 boundary      p p p
 atom_style    atomic
 
-pair_style    eqv2 ../../potentials/EQV2
-#pair_style    eqv2/d3 ../../potentials/EQV2
-#pair_style    eqv2/gpu ../../potentials/EQV2
-#pair_style    eqv2/d3/gpu ../../potentials/EQV2
+pair_style    fairchem ../../potentials/EQV2
+#pair_style    fairchem/d3 ../../potentials/EQV2
+#pair_style    fairchem/gpu ../../potentials/EQV2
+#pair_style    fairchem/d3/gpu ../../potentials/EQV2
 
 read_data     ./dat.lammps
 

@@ -5,11 +5,11 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-#include "pair_eqv2_gpu.h"
+#include "pair_fairchem_d3_gpu.h"
 
 using namespace LAMMPS_NS;
 
-PairEQV2GPU::PairEQV2GPU(LAMMPS *lmp) : PairEQV2(lmp)
+PairFAIRChemD3GPU::PairFAIRChemD3GPU(LAMMPS *lmp) : PairFAIRChem(lmp)
 {
     if (copymode)
     {
@@ -19,17 +19,17 @@ PairEQV2GPU::PairEQV2GPU(LAMMPS *lmp) : PairEQV2(lmp)
     // NOP
 }
 
-PairEQV2GPU::~PairEQV2GPU()
+PairFAIRChemD3GPU::~PairFAIRChemD3GPU()
 {
     // NOP
 }
 
-int PairEQV2GPU::withDFTD3()
+int PairFAIRChemD3GPU::withDFTD3()
 {
-    return 0;
+    return 1;
 }
 
-int PairEQV2GPU::withGPU()
+int PairFAIRChemD3GPU::withGPU()
 {
     return 1;
 }

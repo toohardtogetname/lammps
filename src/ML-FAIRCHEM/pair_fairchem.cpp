@@ -5,11 +5,11 @@
  * found in the LICENSE file in the root directory of this source tree.
  */
 
-#include "pair_eqv2.h"
+#include "pair_fairchem.h"
 
 using namespace LAMMPS_NS;
 
-PairEQV2::PairEQV2(LAMMPS *lmp) : Pair(lmp)
+PairFAIRChem::PairFAIRChem(LAMMPS *lmp) : Pair(lmp)
 {
     single_enable           = 0;
     restartinfo             = 0;
@@ -28,14 +28,14 @@ PairEQV2::PairEQV2(LAMMPS *lmp) : Pair(lmp)
     this->pyModule          = nullptr;
     this->pyFunc            = nullptr;
 
-    if (!PairEQV2::finalized)
+    if (!PairFAIRChem::finalized)
     {
-        PairEQV2::finalized = 1;
-        std::atexit(PairEQV2::finalize);
+        PairFAIRChem::finalized = 1;
+        std::atexit(PairFAIRChem::finalize);
     }
 }
 
-PairEQV2::~PairEQV2()
+PairFAIRChem::~PairFAIRChem()
 {
     if (copymode)
     {
@@ -73,14 +73,14 @@ PairEQV2::~PairEQV2()
     }
 }
 
-int PairEQV2::finalized = 0;
+int PairFAIRChem::finalized = 0;
 
-void PairEQV2::finalize()
+void PairFAIRChem::finalize()
 {
     if(Py_IsInitialized()) Py_Finalize();
 }
 
-void PairEQV2::allocate()
+void PairFAIRChem::allocate()
 {
     allocated = 1;
 
@@ -95,13 +95,13 @@ void PairEQV2::allocate()
     memory->create(this->forces,    this->maxinum, 3, "pair:forces");
 }
 
-void PairEQV2::compute(int eflag, int vflag)
+void PairFAIRChem::compute(int eflag, int vflag)
 {
     ev_init(eflag, vflag);
 
     if (eflag_atom)
     {
-        error->all(FLERR, "Pair style EquiformerV2 does not support atomic energy");
+        error->all(FLERR, "Pair style FAIR-Chem does not support atomic energy");
     }
 
     if (vflag)
@@ -109,7 +109,7 @@ void PairEQV2::compute(int eflag, int vflag)
         if (this->virialWarning == 0)
         {
             this->virialWarning = 1;
-            error->warning(FLERR, "Pair style EquiformerV2 does currently not support virial pressure");
+            error->warning(FLERR, "Pair style FAIR-Chem does currently not support virial pressure");
             error->warning(FLERR, "Calculated pressure is INCORRECT");
         }
     }
@@ -119,7 +119,7 @@ void PairEQV2::compute(int eflag, int vflag)
     this->performGNN();
 }
 
-void PairEQV2::prepareGNN()
+void PairFAIRChem::prepareGNN()
 {
     int i;
     int iatom;
@@ -167,7 +167,7 @@ void PairEQV2::prepareGNN()
     }
 }
 
-void PairEQV2::performGNN()
+void PairFAIRChem::performGNN()
 {
     int i;
     int iatom;
@@ -199,11 +199,11 @@ void PairEQV2::performGNN()
     }
 }
 
-void PairEQV2::settings(int narg, char **arg)
+void PairFAIRChem::settings(int narg, char **arg)
 {
     if (comm->nprocs > 1)
     {
-        error->all(FLERR, "Pair style EquiformerV2 does not support MPI parallelization");
+        error->all(FLERR, "Pair style FAIR-Chem does not support MPI parallelization");
     }
 
     if (narg < 1)
@@ -221,7 +221,7 @@ void PairEQV2::settings(int narg, char **arg)
     }
 }
 
-void PairEQV2::coeff(int narg, char **arg)
+void PairFAIRChem::coeff(int narg, char **arg)
 {
     int i, j;
     int count;
@@ -265,7 +265,7 @@ void PairEQV2::coeff(int narg, char **arg)
 
     if (ntypesEff < 1)
     {
-        error->all(FLERR, "There are no elements for pair_coeff of EquiformerV2.");
+        error->all(FLERR, "There are no elements for pair_coeff of FAIR-Chem.");
     }
 
     if (!allocated)
@@ -282,7 +282,7 @@ void PairEQV2::coeff(int narg, char **arg)
 
     if (this->cutoff <= 0.0)
     {
-        error->all(FLERR, "Cutoff is not positive for pair_coeff of EquiformerV2.");
+        error->all(FLERR, "Cutoff is not positive for pair_coeff of FAIR-Chem.");
     }
 
     count = 0;
@@ -309,7 +309,7 @@ void PairEQV2::coeff(int narg, char **arg)
     }
 }
 
-double PairEQV2::init_one(int i, int j)
+double PairFAIRChem::init_one(int i, int j)
 {
     if (setflag[i][j] == 0)
     {
@@ -327,34 +327,34 @@ double PairEQV2::init_one(int i, int j)
     return r;
 }
 
-void PairEQV2::init_style()
+void PairFAIRChem::init_style()
 {
     if (strcmp(update->unit_style, "metal") != 0)
     {
-        error->all(FLERR, "Pair style EquiformerV2 requires 'units metal'");
+        error->all(FLERR, "Pair style FAIR-Chem requires 'units metal'");
     }
 
     int* periodicity = domain->periodicity;
 
     if (!(periodicity[0] && periodicity[1] && periodicity[2]))
     {
-        error->all(FLERR, "Pair style EquiformerV2 requires periodic boundary condition");
+        error->all(FLERR, "Pair style FAIR-Chem requires periodic boundary condition");
     }
 
     neighbor->add_request(this, NeighConst::REQ_FULL);
 }
 
-int PairEQV2::withDFTD3()
+int PairFAIRChem::withDFTD3()
 {
     return 0;
 }
 
-int PairEQV2::withGPU()
+int PairFAIRChem::withGPU()
 {
     return 0;
 }
 
-void PairEQV2::finalizePython()
+void PairFAIRChem::finalizePython()
 {
     if (this->initializedPython == 0)
     {
@@ -372,7 +372,7 @@ void PairEQV2::finalizePython()
 }
 
 
-double PairEQV2::initializePython(const char *name, int dftd3, int gpu)
+double PairFAIRChem::initializePython(const char *name, int dftd3, int gpu)
 {
     if (this->initializedPython != 0)
     {
@@ -417,7 +417,7 @@ double PairEQV2::initializePython(const char *name, int dftd3, int gpu)
         }
     }
 
-    pyName = PyUnicode_DecodeFSDefault("eqv2_driver");
+    pyName = PyUnicode_DecodeFSDefault("fairchem_driver");
     if (pyName != nullptr)
     {
         pyModule = PyImport_Import(pyName);
@@ -426,7 +426,7 @@ double PairEQV2::initializePython(const char *name, int dftd3, int gpu)
 
     if (pyModule != nullptr)
     {
-        pyFunc = PyObject_GetAttrString(pyModule, "eqv2_initialize");
+        pyFunc = PyObject_GetAttrString(pyModule, "fairchem_initialize");
 
         if (pyFunc != nullptr && PyCallable_Check(pyFunc))
         {
@@ -463,7 +463,7 @@ double PairEQV2::initializePython(const char *name, int dftd3, int gpu)
 
         Py_XDECREF(pyFunc);
 
-        pyFunc = PyObject_GetAttrString(pyModule, "eqv2_get_energy_and_forces");
+        pyFunc = PyObject_GetAttrString(pyModule, "fairchem_get_energy_and_forces");
 
         if (pyFunc != nullptr && PyCallable_Check(pyFunc))
         {
@@ -491,7 +491,7 @@ double PairEQV2::initializePython(const char *name, int dftd3, int gpu)
 
         if(Py_IsInitialized()) Py_Finalize();
 
-        error->all(FLERR, "Cannot initialize python for pair_coeff of OC20.");
+        error->all(FLERR, "Cannot initialize python for pair_coeff of FAIR-Chem.");
     }
 
     this->pyModule = pyModule;
@@ -500,7 +500,7 @@ double PairEQV2::initializePython(const char *name, int dftd3, int gpu)
     return cutoff;
 }
 
-double PairEQV2::calculatePython()
+double PairFAIRChem::calculatePython()
 {
     int i;
     int iatom;
@@ -632,7 +632,7 @@ double PairEQV2::calculatePython()
 
     if (hasEnergy == 0 || hasForces == 0)
     {
-        error->all(FLERR, "Cannot calculate energy and forces by python of EquiformerV2.");
+        error->all(FLERR, "Cannot calculate energy and forces by python of FAIR-Chem.");
     }
 
     return energy;
@@ -651,7 +651,7 @@ static const char* ALL_ELEMENTS[] = {
     "Nh", "Fl", "Mc", "Lv", "Ts", "Og"
 };
 
-int PairEQV2::elementToAtomNum(const char *elem)
+int PairFAIRChem::elementToAtomNum(const char *elem)
 {
     char elem1[16];
 
@@ -677,7 +677,7 @@ int PairEQV2::elementToAtomNum(const char *elem)
     return 0;
 }
 
-void PairEQV2::toRealElement(char *elem)
+void PairFAIRChem::toRealElement(char *elem)
 {
     int n = strlen(elem);
     n = n > 2 ? 2 : n;

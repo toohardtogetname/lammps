@@ -7,24 +7,24 @@
 
 #ifdef PAIR_CLASS
 
-PairStyle(eqv2/d3, PairEQV2D3)
+PairStyle(fairchem/gpu, PairFAIRChemGPU)
 
 #else
 
-#ifndef LMP_PAIR_EQV2_D3_H_
-#define LMP_PAIR_EQV2_D3_H_
+#ifndef LMP_PAIR_FAIRCHEM_GPU_H_
+#define LMP_PAIR_FAIRCHEM_GPU_H_
 
-#include "pair_eqv2.h"
+#include "pair_fairchem.h"
 
 namespace LAMMPS_NS
 {
 
-class PairEQV2D3: public PairEQV2
+class PairFAIRChemGPU: public PairFAIRChem
 {
 public:
-    PairEQV2D3(class LAMMPS*);
+    PairFAIRChemGPU(class LAMMPS*);
 
-    virtual ~PairEQV2D3() override;
+    virtual ~PairFAIRChemGPU() override;
 
 protected:
     int withDFTD3() override;
@@ -34,5 +34,5 @@ protected:
 
 }  // namespace LAMMPS_NS
 
-#endif /* LMP_PAIR_EQV2_D3_H_ */
+#endif /* LMP_PAIR_FAIRCHEM_GPU_H_ */
 #endif

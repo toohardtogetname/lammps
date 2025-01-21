@@ -7,12 +7,12 @@
 
 #ifdef PAIR_CLASS
 
-PairStyle(eqv2, PairEQV2)
+PairStyle(fairchem, PairFAIRCHEM)
 
 #else
 
-#ifndef LMP_PAIR_EQV2_H_
-#define LMP_PAIR_EQV2_H_
+#ifndef LMP_PAIR_FAIRCHEM_H_
+#define LMP_PAIR_FAIRCHEM_H_
 
 #include <Python.h>
 #include <cstdlib>
@@ -31,12 +31,12 @@ PairStyle(eqv2, PairEQV2)
 namespace LAMMPS_NS
 {
 
-class PairEQV2: public Pair
+class PairFAIRChem: public Pair
 {
 public:
-    PairEQV2(class LAMMPS*);
+    PairFAIRChem(class LAMMPS*);
 
-    virtual ~PairEQV2() override;
+    virtual ~PairFAIRChem() override;
 
     void compute(int, int) override;
 
@@ -93,5 +93,5 @@ private:
 
 }  // namespace LAMMPS_NS
 
-#endif /* LMP_PAIR_EQV2_H_ */
+#endif /* LMP_PAIR_FAIRCHEM_H_ */
 #endif

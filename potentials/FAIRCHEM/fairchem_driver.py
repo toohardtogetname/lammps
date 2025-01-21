@@ -13,9 +13,9 @@ from fairchem.core.common.relaxation.ase_utils import OCPCalculator
 import os
 import torch
 
-def eqv2_initialize(model_name = None, dftd3 = False, gpu = True):
+def fairchem_initialize(model_name = None, dftd3 = False, gpu = True):
     """
-    Initialize GNNP of EquiformerV2.
+    Initialize GNNP of FAIR-Chem.
     Args:
         model_name (str): name of model for GNNP.
         dftd3 (bool): to add correction of DFT-D3.
@@ -31,7 +31,7 @@ def eqv2_initialize(model_name = None, dftd3 = False, gpu = True):
     global myCalculator
 
     basePath   = os.path.dirname(os.path.abspath(__file__))
-    checkpt_dir = os.path.normpath(os.path.join(basePath, "eqv2_checkpt"))
+    checkpt_dir = os.path.normpath(os.path.join(basePath, "fairchem_checkpt"))
 
     myCalculator = OCPCalculator(
         local_cache = checkpt_dir,
@@ -40,10 +40,10 @@ def eqv2_initialize(model_name = None, dftd3 = False, gpu = True):
     )
 
     # Add DFT-D3 to calculator without three-body term
-    global eqv2Calculator
+    global fairchemCalculator
     global dftd3Calculator
 
-    eqv2Calculator = myCalculator
+    fairchemCalculator = myCalculator
     dftd3Calculator  = None
 
     if dftd3:
@@ -61,18 +61,18 @@ def eqv2_initialize(model_name = None, dftd3 = False, gpu = True):
         #    abc     = False
         #)
 
-        myCalculator = SumCalculator([eqv2Calculator, dftd3Calculator])
+        myCalculator = SumCalculator([fairchemCalculator, dftd3Calculator])
 
     # Atoms object of ASE, that is empty here
     global myAtoms
 
     myAtoms = None
 
-    return eqv2Calculator.config["model"].get("max_radius", 8.0)
+    return fairchemCalculator.config["model"].get("max_radius", 8.0)
 
-def eqv2_get_energy_and_forces(cell, atomic_numbers, positions):
+def fairchem_get_energy_and_forces(cell, atomic_numbers, positions):
     """
-    Predict total energy and atomic forces w/ pre-trained GNNP of EquiformerV2.
+    Predict total energy and atomic forces w/ pre-trained GNNP of FAIR-Chem.
     Args:
         cell: lattice vectors in angstroms.
         atomic_numbers: atomic numbers for all atoms.

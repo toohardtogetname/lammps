@@ -107,7 +107,7 @@ PACKAGE = \
 	ml-oc20driver \
 	ml-m3gnet \
 	ml-chgnet \
-	ml-eqv2 \
+	ml-fairchem \
 	ml-orb \
 	ml-mattersim \
 	ml-mace \

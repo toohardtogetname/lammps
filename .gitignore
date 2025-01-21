@@ -4,7 +4,7 @@ examples/
 !examples/OC20DRIVER/
 !examples/M3GNET/
 !examples/CHGNET/
-!examples/EQV2/
+!examples/FAIRCHEM/
 !examples/ORB/
 !examples/MATTERSIM/
 !examples/MACE/
@@ -12,7 +12,7 @@ potentials/
 !potentials/OC20DRIVER/
 !potentials/M3GNET/
 !potentials/CHGNET/
-!potentials/EQV2/
+!potentials/FAIRCHEM/
 !potentials/ORB/
 !potentials/MATTERSIM/
 !potentials/MACE/
