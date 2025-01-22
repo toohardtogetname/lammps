@@ -176,7 +176,7 @@ void PairMatterSim::performGNN()
     double volume;
     double evdwl = 0.0;
 
-    // perform Graph Neural Network Potential of CHGNet
+    // perform Graph Neural Network Potential of MatterSim
     evdwl = this->calculatePython();
 
     // set total energy

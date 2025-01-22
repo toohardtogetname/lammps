@@ -179,7 +179,7 @@ void PairFAIRChem::performGNN()
 
     double evdwl = 0.0;
 
-    // perform Graph Neural Network Potential of OC20
+    // perform Graph Neural Network Potential of FAIR-Chem
     evdwl = this->calculatePython();
 
     // set total energy

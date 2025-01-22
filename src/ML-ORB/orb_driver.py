@@ -25,7 +25,7 @@ def orb_initialize(model_name, gpu = True):
     # Check gpu
     device = "cuda" if (gpu and torch.cuda.is_available()) else "cpu"
 
-    # Create CHGNetCalculator, that is pre-trained
+    # Create ORBCalculator, that is pre-trained
     global myCalculator
 
     orbff = pretrained.ORB_PRETRAINED_MODELS[model_name](device=device)

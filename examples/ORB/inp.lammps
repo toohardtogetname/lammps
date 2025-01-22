@@ -19,7 +19,11 @@ pair_style    orb ../../potentials/ORB
 
 read_data     ./dat.lammps
 
-pair_coeff    * *  EquiformerV2-83M-S2EF-OC20-2M  Zr O
+pair_coeff    * *  orb-v2  Zr O
+#pair_coeff    * *  orb-d3-v2  Zr O
+#pair_coeff    * *  orb-d3-sm-v2  Zr O
+#pair_coeff    * *  orb-d3-xs-v2  Zr O
+#pair_coeff    * *  orb-mptraj-only-v2  Zr O
 
 dump          myDump all custom 10 xyz.lammpstrj id element x y z
 dump_modify   myDump sort id element Zr O
