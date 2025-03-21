@@ -117,7 +117,7 @@ void PairGNNP::compute(int eflag, int vflag)
         if (this->withStress == 0 && this->virialWarning == 0)
         {
             this->virialWarning = 1;
-            error->warning(FLERR, "Pair style FAIR-Chem does currently not support virial pressure");
+            error->warning(FLERR, "This GNN model does currently not support virial pressure");
             error->warning(FLERR, "Calculated pressure is INCORRECT");
         }
     }
@@ -313,18 +313,11 @@ void PairGNNP::coeff(int narg, char **arg)
         this->finalizePython();
     }
 
-    this->cutoff = this->initializePython(arg[iarg - 2], arg[iarg - 1], as_path, dftd3, gpu);
+    this->initializePython(arg[iarg - 2], arg[iarg - 1], as_path, dftd3, gpu);
 
     if (this->cutoff <= 0.0)
     {
         error->all(FLERR, "Cutoff is not positive for pair_coeff of GNNP.");
-    }
-
-    this->withStress = 1;
-
-    if (strcasecmp(arg[iarg - 2], "fairchem") == 0)
-    {
-        this->withStress = 0;
     }
 
     count = 0;
@@ -413,14 +406,18 @@ void PairGNNP::finalizePython()
     //if(Py_IsInitialized()) Py_Finalize();
 }
 
-double PairGNNP::initializePython(const char *gnnp, const char *name, int as_path, int dftd3, int gpu)
+void PairGNNP::initializePython(const char *gnnp, const char *name, int as_path, int dftd3, int gpu)
 {
     if (this->initializedPython != 0)
     {
-        return this->cutoff;
+        return;
     }
 
-    double cutoff = -1.0;
+    this->cutoff      = -1.0;
+    this->withStress  = 1;
+
+    int hasCutoff     = 0;
+    int hasWithStress = 0;
 
     PyObject* pySys    = nullptr;
     PyObject* pyPath   = nullptr;
@@ -434,6 +431,8 @@ double PairGNNP::initializePython(const char *gnnp, const char *name, int as_pat
     PyObject* pyArg4   = nullptr;
     PyObject* pyArg5   = nullptr;
     PyObject* pyValue  = nullptr;
+    PyObject* pyVal1   = nullptr;
+    PyObject* pyVal2   = nullptr;
 
     if (!Py_IsInitialized()) Py_Initialize();
 
@@ -490,14 +489,40 @@ double PairGNNP::initializePython(const char *gnnp, const char *name, int as_pat
 
             Py_DECREF(pyArgs);
 
-            if (pyValue != nullptr && PyFloat_Check(pyValue))
+            if (pyValue != nullptr && PyTuple_Check(pyValue) && PyTuple_Size(pyValue) >= 2)
             {
-                this->initializedPython = 1;
-                cutoff = PyFloat_AsDouble(pyValue);
+                // get cutoff <- pyValue
+                pyVal1 = PyTuple_GetItem(pyValue, 0);
+                if (pyVal1 != nullptr && PyFloat_Check(pyVal1))
+                {
+                    hasCutoff = 1;
+                    this->cutoff = PyFloat_AsDouble(pyVal1);
+                }
+                else
+                {
+                    if (PyErr_Occurred()) PyErr_Print();
+                }
+
+                // get withStress <- pyValue
+                pyVal2 = PyTuple_GetItem(pyValue, 1);
+                if (pyVal2 != nullptr && PyLong_Check(pyVal2))
+                {
+                    hasWithStress = 1;
+                    this->withStress = (int) PyLong_AsLong(pyVal2);
+                }
+                else
+                {
+                    if (PyErr_Occurred()) PyErr_Print();
+                }
             }
             else
             {
                 if (PyErr_Occurred()) PyErr_Print();
+            }
+
+            if (hasCutoff != 0 && hasWithStress != 0)
+            {
+                this->initializedPython = 1;
             }
 
             Py_XDECREF(pyValue);
@@ -543,8 +568,6 @@ double PairGNNP::initializePython(const char *gnnp, const char *name, int as_pat
 
     this->pyModule = pyModule;
     this->pyFunc   = pyFunc;
-
-    return cutoff;
 }
 
 double PairGNNP::calculatePython()

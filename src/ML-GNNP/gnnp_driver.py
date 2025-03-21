@@ -24,6 +24,7 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
         gpu (bool): using GPU, if possible.
     Returns:
         cutoff (float): cutoff radius.
+        with_stress (int): to calculate stress, or not.
     """
 
     # Check gpu
@@ -175,6 +176,10 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
     else:
         raise ValueError("gnnp_type is incorrect: " + gnnp_type)
 
+    if "stress" in myCalculator.implemented_properties
+        with_stress = 1
+    else:
+        with_stress = 0
 
     # Add DFT-D3 to calculator without three-body term
     global gnnpCalculator
@@ -209,7 +214,7 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
 
     myAtoms = None
 
-    return cutoff
+    return (cutoff, with_stress)
 
 def gnnp_get_energy_forces_stress(cell, atomic_numbers, positions, with_stress = True):
     """
