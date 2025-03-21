@@ -104,13 +104,7 @@ PACKAGE = \
 	ml-rann \
 	ml-snap \
 	ml-sannp \
-	ml-oc20driver \
-	ml-m3gnet \
-	ml-chgnet \
-	ml-fairchem \
-	ml-orb \
-	ml-mattersim \
-	ml-mace \
+	ml-gnnp \
 	mofff \
 	molecule \
 	molfile \
