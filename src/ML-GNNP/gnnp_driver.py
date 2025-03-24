@@ -17,7 +17,7 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
     """
     Initialize GNNP.
     Args:
-        gnnp_type (str): type of GNNP. -> {m3gnet|chgnet|mace|mace-off|orb|mattersim|fairchem}
+        gnnp_type (str): type of GNNP. -> {matgl|chgnet|mace|mace-off|orb|mattersim|fairchem}
         model_name (str): name of model for GNNP.
         as_path (bool): if true, model_name is path of model file. this is only for chgnet.
         dftd3 (bool): to add correction of DFT-D3.
@@ -42,8 +42,8 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
 
     gnnp_type = gnnp_type.lower()
 
-    if gnnp_type == "m3gnet" or gnnp_type == "matgl":
-        # M3GNet/MatGL
+    if gnnp_type == "matgl":
+        # MatGL
         import matgl
         from matgl.ext.ase import PESCalculator
 
