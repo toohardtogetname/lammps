@@ -176,7 +176,7 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
     else:
         raise ValueError("gnnp_type is incorrect: " + gnnp_type)
 
-    if "stress" in myCalculator.implemented_properties
+    if "stress" in myCalculator.implemented_properties:
         with_stress = 1
     else:
         with_stress = 0
