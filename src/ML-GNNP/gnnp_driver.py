@@ -104,9 +104,11 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
             model = model_name
 
         myCalculator = mace_mp(
-            model      = model,
-            dispersion = dftd3,
-            device     = device
+            model         = model,
+            device        = device,
+            dispersion    = dftd3,
+            damping       = "zero",
+            dispersion_xc = "pbe"
         )
 
         if dftd3:
@@ -122,8 +124,8 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
         from mace.calculators import mace_off
 
         myCalculator = mace_off(
-            model  = model_name,
-            device = device
+            model         = model_name,
+            device        = device
         )
 
         cutoff = myCalculator.r_max
@@ -134,9 +136,11 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
         from orb_models.forcefield.calculator import ORBCalculator
 
         if model_name is not None and model_name in pretrained.ORB_PRETRAINED_MODELS:
-            orbff = pretrained.ORB_PRETRAINED_MODELS[model_name](device=device)
+            model_func = pretrained.ORB_PRETRAINED_MODELS[model_name]
         else:
-            orbff = pretrained.orb_v2(device=device)
+            model_func = pretrained.orb_v2
+
+        orbff = model_func(device = device)
 
         myCalculator = ORBCalculator(orbff, device=device)
 
