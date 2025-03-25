@@ -145,7 +145,7 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
         else:
             model_func = pretrained.orb_v2
 
-        if model_path not is None:
+        if model_path is not None:
             orbff = model_func(device = device, weights_path = model_path)
         else:
             orbff = model_func(device = device)
