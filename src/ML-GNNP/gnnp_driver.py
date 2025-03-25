@@ -135,12 +135,20 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
         from orb_models.forcefield import pretrained
         from orb_models.forcefield.calculator import ORBCalculator
 
+        if model_name is not None and ";" in model_name:
+            model_name, model_path = model_name.split(";", 1)
+        else:
+            model_path = None
+
         if model_name is not None and model_name in pretrained.ORB_PRETRAINED_MODELS:
             model_func = pretrained.ORB_PRETRAINED_MODELS[model_name]
         else:
             model_func = pretrained.orb_v2
 
-        orbff = model_func(device = device)
+        if model_path not is None:
+            orbff = model_func(device = device, weights_path = model_path)
+        else:
+            orbff = model_func(device = device)
 
         myCalculator = ORBCalculator(orbff, device=device)
 
