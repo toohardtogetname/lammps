@@ -19,7 +19,7 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
     Args:
         gnnp_type (str): type of GNNP. -> {matgl|chgnet|mace|mace-off|orb|mattersim|fairchem}
         model_name (str): name of model for GNNP.
-        as_path (bool): if true, model_name is path of model file. this is only for chgnet.
+        as_path (bool): if true, model_name is path of model file. this is only for chgnet/fairchem.
         dftd3 (bool): to add correction of DFT-D3.
         gpu (bool): using GPU, if possible.
     Returns:
@@ -124,8 +124,8 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
         from mace.calculators import mace_off
 
         myCalculator = mace_off(
-            model         = model_name,
-            device        = device
+            model  = model_name,
+            device = device
         )
 
         cutoff = myCalculator.r_max
@@ -135,12 +135,20 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
         from orb_models.forcefield import pretrained
         from orb_models.forcefield.calculator import ORBCalculator
 
+        if model_name is not None and ";" in model_name:
+            model_name, model_path = model_name.split(";", 1)
+        else:
+            model_path = None
+
         if model_name is not None and model_name in pretrained.ORB_PRETRAINED_MODELS:
             model_func = pretrained.ORB_PRETRAINED_MODELS[model_name]
         else:
             model_func = pretrained.orb_v2
 
-        orbff = model_func(device = device)
+        if model_path is not None:
+            orbff = model_func(device = device, weights_path = model_path)
+        else:
+            orbff = model_func(device = device)
 
         myCalculator = ORBCalculator(orbff, device=device)
 
@@ -166,14 +174,21 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
         # FAIR-Chem
         from fairchem.core.common.relaxation.ase_utils import OCPCalculator
 
-        base_path   = os.path.dirname (os.path.abspath(__file__))
-        checkpt_dir = os.path.normpath(os.path.join(base_path, "fairchem_checkpt"))
+        if as_path:
+            myCalculator = OCPCalculator(
+                checkpoint_path = model_name,
+                cpu             = not gpu
+            )
 
-        myCalculator = OCPCalculator(
-            local_cache = checkpt_dir,
-            model_name  = model_name,
-            cpu         = not gpu
-        )
+        else:
+            base_path   = os.path.dirname (os.path.abspath(__file__))
+            checkpt_dir = os.path.normpath(os.path.join(base_path, "fairchem_checkpt"))
+
+            myCalculator = OCPCalculator(
+                model_name  = model_name,
+                local_cache = checkpt_dir,
+                cpu         = not gpu
+            )
 
         cutoff = myCalculator.config["model"].get("max_radius", 8.0)
 
