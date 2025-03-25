@@ -19,7 +19,7 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
     Args:
         gnnp_type (str): type of GNNP. -> {matgl|chgnet|mace|mace-off|orb|mattersim|fairchem}
         model_name (str): name of model for GNNP.
-        as_path (bool): if true, model_name is path of model file. this is only for chgnet/fairchem.
+        as_path (bool): if true, model_name is path of model file. this is only for chgnet/orb/fairchem.
         dftd3 (bool): to add correction of DFT-D3.
         gpu (bool): using GPU, if possible.
     Returns:
@@ -135,26 +135,25 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
         from orb_models.forcefield import pretrained
         from orb_models.forcefield.calculator import ORBCalculator
 
-        if model_name is not None and ";" in model_name:
-            model_name, model_path = model_name.split(";", 1)
-        else:
-            model_path = None
+        if as_path:
+            orbff = pretrained.orb_v2(
+                weights_path = model_name,
+                device       = device
+            )
 
-        if model_name is not None and model_name in pretrained.ORB_PRETRAINED_MODELS:
-            model_func = pretrained.ORB_PRETRAINED_MODELS[model_name]
         else:
-            model_func = pretrained.orb_v2
+            if model_name is not None and model_name in pretrained.ORB_PRETRAINED_MODELS:
+                model_func = pretrained.ORB_PRETRAINED_MODELS[model_name]
+            else:
+                model_func = pretrained.orb_v2
 
-        if model_path is not None:
-            orbff = model_func(device = device, weights_path = model_path)
-        else:
+            if model_name is not None and "d3" in model_name:
+                if dftd3:
+                    dftd3 = False
+
             orbff = model_func(device = device)
 
         myCalculator = ORBCalculator(orbff, device=device)
-
-        if model_name is not None and "d3" in model_name:
-            if dftd3:
-                dftd3 = False
 
         cutoff = float(orbff.model.gnn_stacks[0]._r_max)
 
