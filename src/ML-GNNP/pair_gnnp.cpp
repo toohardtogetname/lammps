@@ -266,7 +266,7 @@ void PairGNNP::coeff(int narg, char **arg)
         error->all(FLERR, "Only wildcard asterisk is allowed in place of atom types for pair_coeff.");
     }
 
-    if (strcmp(arg[2], "path") == 0)
+    if (strcmp(arg[3], "path") == 0)
     {
         iarg    = 5;
         as_path = 1;
@@ -313,7 +313,7 @@ void PairGNNP::coeff(int narg, char **arg)
         this->finalizePython();
     }
 
-    this->initializePython(arg[iarg - 2], arg[iarg - 1], as_path, dftd3, gpu);
+    this->initializePython(arg[2], arg[iarg - 1], as_path, dftd3, gpu);
 
     if (this->cutoff <= 0.0)
     {

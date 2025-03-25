@@ -23,6 +23,7 @@ pair_style    gnnp ../../potentials/GNNP
 read_data     ./dat.lammps
 
 pair_coeff    * *  fairchem EquiformerV2-83M-S2EF-OC20-2M  Zr O
+#pair_coeff    * *  fairchem path ./users_model.pt  Zr O
 
 dump          myDump all custom 10 xyz.lammpstrj id element x y z
 dump_modify   myDump sort id element Zr O
