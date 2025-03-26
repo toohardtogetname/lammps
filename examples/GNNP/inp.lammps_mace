@@ -14,10 +14,10 @@ units         metal
 boundary      p p p
 atom_style    atomic
 
-pair_style    gnnp ../../potentials/GNNP
-#pair_style    gnnp/d3 ../../potentials/GNNP
-#pair_style    gnnp/gpu ../../potentials/GNNP
-#pair_style    gnnp/d3/gpu ../../potentials/GNNP
+pair_style    gnnp ../../src/ML-GNNP
+#pair_style    gnnp/d3 ../../src/ML-GNNP
+#pair_style    gnnp/gpu ../../src/ML-GNNP
+#pair_style    gnnp/d3/gpu ../../src/ML-GNNP
 
 read_data     ./dat.lammps
 
@@ -25,7 +25,9 @@ pair_coeff    * *  mace medium  Zr O
 #pair_coeff    * *  mace small  Zr O
 #pair_coeff    * *  mace large  Zr O
 #pair_coeff    * *  mace medium-mpa-0  Zr O
+#pair_coeff    * *  mace mace-osaka24-small   Zr O
 #pair_coeff    * *  mace mace-osaka24-medium  Zr O
+#pair_coeff    * *  mace mace-osaka24-large   Zr O
 
 dump          myDump all custom 10 xyz.lammpstrj id element x y z
 dump_modify   myDump sort id element Zr O

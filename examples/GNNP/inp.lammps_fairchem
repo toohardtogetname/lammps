@@ -15,14 +15,22 @@ units         metal
 boundary      p p p
 atom_style    atomic
 
-pair_style    gnnp ../../potentials/GNNP
-#pair_style    gnnp/d3 ../../potentials/GNNP
-#pair_style    gnnp/gpu ../../potentials/GNNP
-#pair_style    gnnp/d3/gpu ../../potentials/GNNP
+pair_style    gnnp ../../src/ML-GNNP
+#pair_style    gnnp/d3 ../../src/ML-GNNP
+#pair_style    gnnp/gpu ../../src/ML-GNNP
+#pair_style    gnnp/d3/gpu ../../src/ML-GNNP
 
 read_data     ./dat.lammps
 
-pair_coeff    * *  fairchem EquiformerV2-83M-S2EF-OC20-2M  Zr O
+pair_coeff    * *  fairchem EquiformerV2-31M-OMat  Zr O
+#pair_coeff    * *  fairchem EquiformerV2-86M-OMat  Zr O
+#pair_coeff    * *  fairchem EquiformerV2-153M-OMat  Zr O
+#pair_coeff    * *  fairchem EquiformerV2-31M-OMat-Alex-MP  Zr O
+#pair_coeff    * *  fairchem EquiformerV2-86M-OMat-Alex-MP  Zr O
+#pair_coeff    * *  fairchem EquiformerV2-153M-OMat-Alex-MP  Zr O
+#pair_coeff    * *  fairchem EquiformerV2-83M-S2EF-OC20-2M  Zr O
+#pair_coeff    * *  fairchem EquiformerV2-lE4-lF100-S2EFS-OC22  Zr O
+#pair_coeff    * *  fairchem EquiformerV2-S2EF-ODAC  Zr O
 #pair_coeff    * *  fairchem path ./users_model.pt  Zr O
 
 dump          myDump all custom 10 xyz.lammpstrj id element x y z

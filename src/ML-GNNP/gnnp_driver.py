@@ -180,14 +180,41 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
             )
 
         else:
+            OMAT_CHECKPTS = {
+                "EquiformerV2-31M-OMat"          : "eqV2_31M_omat.pt",
+                "EquiformerV2-86M-OMat"          : "eqV2_86M_omat.pt",
+                "EquiformerV2-153M-OMat"         : "eqV2_153M_omat.pt",
+                "EquiformerV2-31M-MP"            : "eqV2_31M_mp.pt",
+                "EquiformerV2-31M-DeNS-MP"       : "eqV2_dens_31M_mp.pt",
+                "EquiformerV2-86M-DeNS-MP"       : "eqV2_dens_86M_mp.pt",
+                "EquiformerV2-153M-DeNS-MP"      : "eqV2_dens_153M_mp.pt",
+                "EquiformerV2-31M-OMat-Alex-MP"  : "eqV2_31M_omat_mp_salex.pt",
+                "EquiformerV2-86M-OMat-Alex-MP"  : "eqV2_86M_omat_mp_salex.pt",
+                "EquiformerV2-153M-OMat-Alex-MP" : "eqV2_153M_omat_mp_salex.pt",
+            }
+
+            if model_name is not None:
+                checkpt_name = OMAT_CHECKPTS.get(model_name);
+            else:
+                checkpt_name = OMAT_CHECKPTS.get("EquiformerV2-31M-OMat");
+
             base_path   = os.path.dirname (os.path.abspath(__file__))
             checkpt_dir = os.path.normpath(os.path.join(base_path, "fairchem_checkpt"))
 
-            myCalculator = OCPCalculator(
-                model_name  = model_name,
-                local_cache = checkpt_dir,
-                cpu         = not gpu
-            )
+            if checkpt_name is None:
+                myCalculator = OCPCalculator(
+                    model_name  = model_name,
+                    local_cache = checkpt_dir,
+                    cpu         = not gpu
+                )
+
+            else:
+                model_path = os.path.normpath(os.path.join(checkpt_dir, checkpt_name))
+
+                myCalculator = OCPCalculator(
+                    checkpoint_path = model_path,
+                    cpu             = not gpu
+                )
 
         cutoff = myCalculator.config["model"].get("max_radius", 8.0)
 

@@ -14,8 +14,8 @@ units         metal
 boundary      p p p
 atom_style    atomic
 
-pair_style    gnnp ../../potentials/GNNP
-#pair_style    gnnp/gpu ../../potentials/GNNP
+pair_style    gnnp ../../src/ML-GNNP
+#pair_style    gnnp/gpu ../../src/ML-GNNP
 
 read_data     ./dat.lammps
 

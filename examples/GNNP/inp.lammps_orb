@@ -14,8 +14,8 @@ units         metal
 boundary      p p p
 atom_style    atomic
 
-pair_style    gnnp ../../potentials/GNNP
-#pair_style    gnnp/gpu ../../potentials/GNNP
+pair_style    gnnp ../../src/ML-GNNP
+#pair_style    gnnp/gpu ../../src/ML-GNNP
 
 read_data     ./dat.lammps
 
@@ -24,7 +24,7 @@ pair_coeff    * *  orb orb-v2  Zr O
 #pair_coeff    * *  orb orb orb-d3-sm-v2  Zr O
 #pair_coeff    * *  orb orb-d3-xs-v2  Zr O
 #pair_coeff    * *  orb orb-mptraj-only-v2  Zr O
-#pair_coeff    * *  orb orb-v2;./users_model.pt  Zr O
+#pair_coeff    * *  orb orb-v2 path ./users_model.pt  Zr O
 
 dump          myDump all custom 10 xyz.lammpstrj id element x y z
 dump_modify   myDump sort id element Zr O
