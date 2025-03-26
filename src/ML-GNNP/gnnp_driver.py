@@ -92,7 +92,7 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
 
         elif model_name.startswith("mace-osaka24"):
             base_path  = os.path.dirname (os.path.abspath(__file__))
-            model_dir  = os.path.normpath(os.path.join(base_path, "mace-osaka24_models"))
+            model_dir  = os.path.normpath(os.path.join(base_path, "mace-osaka24"))
             model_path = os.path.normpath(os.path.join(model_dir, model_name))
 
             if not model_path.endswith(".model"):
@@ -199,22 +199,25 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
             else:
                 checkpt_name = OMAT_CHECKPTS.get("EquiformerV2-31M-OMat");
 
-            base_path   = os.path.dirname (os.path.abspath(__file__))
-            checkpt_dir = os.path.normpath(os.path.join(base_path, "fairchem_checkpt"))
-
-            if checkpt_name is None:
-                myCalculator = OCPCalculator(
-                    model_name  = model_name,
-                    local_cache = checkpt_dir,
-                    cpu         = not gpu
-                )
-
-            else:
-                model_path = os.path.normpath(os.path.join(checkpt_dir, checkpt_name))
+            if checkpt_name is not None:
+                base_path   = os.path.dirname (os.path.abspath(__file__))
+                checkpt_dir = os.path.normpath(os.path.join(base_path, "fairchem-omat24"))
+                model_path  = os.path.normpath(os.path.join(checkpt_dir, checkpt_name))
 
                 myCalculator = OCPCalculator(
                     checkpoint_path = model_path,
                     cpu             = not gpu
+                )
+
+            else:
+                #base_path   = os.path.dirname (os.path.abspath(__file__))
+                base_path   = os.path.expanduser("~")
+                checkpt_dir = os.path.normpath(os.path.join(base_path, ".fairchem"))
+
+                myCalculator = OCPCalculator(
+                    model_name  = model_name,
+                    local_cache = checkpt_dir,
+                    cpu         = not gpu
                 )
 
         cutoff = myCalculator.config["model"].get("max_radius", 8.0)
