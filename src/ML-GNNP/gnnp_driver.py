@@ -136,6 +136,7 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
         from orb_models.forcefield.calculator import ORBCalculator
 
         if as_path:
+            # fine-tuned model is only for orb_v2
             orbff = pretrained.orb_v2(
                 weights_path = model_name,
                 device       = device
