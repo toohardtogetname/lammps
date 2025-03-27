@@ -302,7 +302,7 @@ def gnnp_get_energy_forces_stress(cell, atomic_numbers, positions, with_stress =
         myAtoms.set_positions(positions)
 
     # Predicting energy, forces and stress
-    energy = myAtoms.get_potential_energy().item()
+    energy = myAtoms.get_potential_energy()
     if not isinstance(energy, float):
         energy = energy.item()
 
