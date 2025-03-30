@@ -11,14 +11,14 @@ OPTFLAGS   =  -O2 -fp-model precise -qoverride-limits
 CCFLAGS    =  -g -traceback -qopenmp -qno-offload \
               -fno-alias -ansi-alias -restrict \
               -DLAMMPS_MEMALIGN=64 $(OPTFLAGS) \
-              -I/home/nisihara/miniconda3/include/python3.9
+              -I/home/nisihara/miniconda3/envs/gnnp11/include/python3.11
 SHFLAGS    =  -fPIC
 DEPFLAGS   =  -M
 
 LINK       =  mpicxx -std=c++11 -static-intel -static-libgcc -static-libstdc++
 LINKFLAGS  =  -g -qopenmp $(OPTFLAGS)
 LIB        =  /opt/intel/oneapi/compiler/2022.1.0/linux/compiler/lib/intel64_lin/libifcore.a \
-              -L/home/nisihara/miniconda3/lib -lpython3 -lpython3.12
+              -L/home/nisihara/miniconda3/envs/gnnp11/lib -lpython3 -lpython3.11
 SIZE       =  size
 
 ARCHIVE    =  ar
