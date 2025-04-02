@@ -68,9 +68,9 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
         from chgnet.model import CHGNet, CHGNetCalculator
 
         if model_name is None:
-            myCHGNet = CHGNet.load()
+            myCHGNet = CHGNet.load(use_device = device)
         elif not as_path:
-            myCHGNet = CHGNet.load(model_name = model_name)
+            myCHGNet = CHGNet.load(use_device = device, model_name = model_name)
         else:
             myCHGNet = CHGNet.from_file(model_name)
 
