@@ -54,6 +54,8 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
         else:
             myPotential = matgl.load_model("M3GNet-MP-2021.2.8-PES")
 
+        myPotential.to(device)
+
         myCalculator = PESCalculator(
             potential      = myPotential,
             compute_stress = True,
