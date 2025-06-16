@@ -246,7 +246,8 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
             dftd3Calculator = TorchDFTD3Calculator(
                 xc      = "pbe",
                 damping = "zero",
-                abc     = False
+                abc     = False,
+                device  = device
             )
 
         else:
