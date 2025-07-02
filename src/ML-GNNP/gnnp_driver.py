@@ -158,7 +158,10 @@ def gnnp_initialize(gnnp_type, model_name = None, as_path = False, dftd3 = False
 
         myCalculator = ORBCalculator(orbff, device=device)
 
-        cutoff = float(orbff.model.gnn_stacks[0]._r_max)
+        if hasattr(orbff.model.gnn_stacks[0], "_r_max"):
+            cutoff = float(orbff.model.gnn_stacks[0]._r_max)
+        else:
+            cutoff = float(myCalculator.system_config.radius)
 
     elif gnnp_type == "mattersim":
         # MatterSim
